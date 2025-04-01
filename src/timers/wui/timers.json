@@ -1,0 +1,12 @@
+[
+       {
+              "name": "Check for UI updates",
+              "isActive": "yes",
+              "command": "",
+              "hours": "1",
+              "minutes": "0",
+              "seconds": "0",
+              "milliseconds": "0",
+              "script": ""
+       }
+]

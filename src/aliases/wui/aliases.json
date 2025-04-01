@@ -1,0 +1,9 @@
+[
+       {
+              "name": "wui main alias",
+              "isActive": "yes",
+              "regex": "^wui\\s?(\\w+)?\\s?(.*)?$",
+              "script": "",
+              "isFolder": "no"
+       }
+]

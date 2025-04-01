@@ -1,0 +1,44 @@
+[
+       {
+              "name": "Event handlers",
+              "isActive": "yes",
+              "script": "",
+              "isFolder": "no"
+       },
+       {
+              "name": "UI Settings",
+              "isActive": "yes",
+              "script": "",
+              "isFolder": "no"
+       },
+       {
+              "name": "Install/Login/Exit",
+              "isActive": "yes",
+              "script": "function wui.connected()\n  wui = wui or {} \nend\n\n\nfunction wui.justLoggedIn()\n  tempTimer(10, [[ wui.checkForUpdate() ]])\nend\n\nfunction wui.profileLoaded()\n  \n  -------------[ Load any saved tables into the name space ]-------------\n  \n  -- Load saved settings if any\n  if io.exists(getMudletHomeDir()..\"/\"..wui.packageName..\"/wui.settings.lua\") then\n    table.load(getMudletHomeDir()..\"/\"..wui.packageName..\"/wui.settings.lua\", wui.settings) -- using / is OK on Windows too.\n    wui.displayUIMessage(\"Settings Table Loaded\")\n    else\n    -- If we don't find any saved settings load the standard settings\n    wui.createSettings()\n  end  \n\n  -- Load the known rooms table\n  if io.exists(getMudletHomeDir()..\"/\"..wui.packageName..\"/wui.knownRooms.lua\") then\n    table.load(getMudletHomeDir()..\"/\"..wui.packageName..\"/wui.knownRooms.lua\", wui.knownRooms) -- using / is OK on Windows too.\n    wui.displayUIMessage(\"Known rooms loaded\")\n  end\n    \n  -- Load the rooms notes\n  if io.exists(getMudletHomeDir()..\"/\"..wui.packageName..\"/wui.roomNotes.lua\") then\n    table.load(getMudletHomeDir()..\"/\"..wui.packageName..\"/wui.roomNotes.lua\", wui.roomNotes) -- using / is OK on Windows too.\n    wui.displayUIMessage(\"Room notes loaded\")\n  end\n  -- Check if we have a crowd map version downloaded\n  \n  -- Crowmap has been disabled currently.\n  \n  --if io.exists(getMudletHomeDir()..\"/map downloads/current\") then\n  --  wui.crowdmapVersionFile = io.open(getMudletHomeDir()..\"/map downloads/current\",r) -- using / is OK on Windows too.\n  --  wui.crowdmapVersion = wui.crowdmapVersionFile:read(\"*number\")\n  --end\n\n  wui.displayUIMessage(\"Initializing UI\")\n  wui.createContainers(\"startup\")\n  \n  if wui.postInstallDone then\n    expandAlias(\"wui\", false)\n    wui.postInstallDone = false\n  end\n\nend\n\n\nfunction wui.saveOnExit()\n  wui.displayUIMessage(\"Saving UI tables\")\n  table.save(getMudletHomeDir()..\"/\"..wui.packageName..\"/wui.settings.lua\", wui.settings)\n  table.save(getMudletHomeDir()..\"/\"..wui.packageName..\"/wui.knownRooms.lua\", wui.knownRooms)\n  table.save(getMudletHomeDir()..\"/\"..wui.packageName..\"/wui.roomNotes.lua\", wui.roomNotes)\nend\n\nfunction wui.postInstallHandling(_, package)\n\n  if package == \"mudlet-mapper_custom\" then\n    mmp = mmp or {}\n    raiseEvent(\"mmp logged in\", \"willowdale\")\n    mmp.game = \"willowdale\"\n    mmp.echo(\"We're connected to Willowdale.\")\n  end\n  \n  if package == \"WillowdaleUI\" then\n   \n    --Check if the generic_mapper package is installed and if so uninstall it\n    if table.contains(getPackages(),\"generic_mapper\") then\n      wui.displayUIMessage(\"Now removing standard mapping script\")\n      if map.registeredEvents then -- Prevent the generic mapper script from showing confusing information\n        for _,id in ipairs(map.registeredEvents) do\n              killAnonymousEventHandler(id)\n        end\n      end\n      tempTimer(1, function() uninstallPackage(\"generic_mapper\") end)\n    end\n  \n    -- Options for pre-relase versions:\n    if string.find(wui.version, \"pre\") then\n      wui.displayUIMessage(\"This is a pre-release version. Version is: \"..wui.version)\n      wui.profileLoaded()\n      wui.connected()\n    end\n    --wui.createContainers(\"startup\")\n        \n    -- Check if there is a map loaded already\n    if table.is_empty(getRooms()) then\n      -- there is no map loaded, but if you want a secondary doublecheck\n      if table.size(getAreaTable()) == 1 then\n      -- only has the defaultarea, and no rooms, so there's definitely no map loaded\n      wui.displayUIMessage(\"No map loaded\")\n      --wui.displayUIMessage(\"Use 'mconfig crowdmap on' to use the crowd map\")\n      end\n    end\n    \n    -- Install IRE mapping script  \n    if not table.contains(getPackages(),\"mudlet-mapper_custom\") then\n      wui.displayUIMessage(\"Now installing custom mapper script\")\n      tempTimer(1, function() installPackage(\"https://play.willowdalemud.com/static/website/ui/mudlet-mapper_custom.mpackage\") end)\n    end\n    \n    wui.postInstallDone = true\n    \n    if not wui.isUpdating then\n      wui.profileLoaded()\n    end\n    wui.updateTopBar()\n  end\n  \nend\n\nfunction wui.unInstall(_, package)\n  \n  if package == \"WillowdaleUI\" and not wui.isUpdating then\n    wui.displayUIMessage(\"Cleaning up - removing the UI mapper\")\n    uninstallPackage(\"mudlet-mapper_custom\")\n    \n    wui.displayUIMessage(\"Re-installing the generic mapper\")\n    if not table.contains(getPackages(),\"generic_mapper\") then\n      tempTimer(1, function() installPackage(\"https://raw.githubusercontent.com/Mudlet/Mudlet/development/src/mudlet-lua/lua/generic-mapper/generic_mapper.xml\") end)\n    end\n    \n    wui.displayUIMessage(\"Removing windows and resetting borders\")\n    wui.left:hide()\n    wui.right:hide()\n    wui.bottom:hide()\n    wui.top:hide()\n    \n    setBorderBottom(0)\n    setBorderTop(0)\n    setBorderLeft(0)\n    setBorderRight(0)\n    setFont(\"main\", \"Bitstream Vera Sans Mono\")\n    \n    tempTimer(3, function() resetProfile() end)\n  end\nend",
+              "isFolder": "no"
+       },
+       {
+              "name": "UI Containers",
+              "isActive": "yes",
+              "script": "",
+              "isFolder": "yes"
+       },
+       {
+              "name": "Update Container Info",
+              "isActive": "yes",
+              "script": "",
+              "isFolder": "yes"
+       },
+       {
+              "name": "Core Functions",
+              "isActive": "yes",
+              "script": "",
+              "isFolder": "yes"
+       },
+       {
+              "name": "Informational",
+              "isActive": "yes",
+              "script": "",
+              "isFolder": "yes"
+       }
+]

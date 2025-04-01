@@ -1,0 +1,90 @@
+[
+       {
+              "name": "Down",
+              "isActive": "yes",
+              "command": "down",
+              "script": "",
+              "keys": "keypad+plus",
+              "isFolder": "no"
+       },
+       {
+              "name": "Look",
+              "isActive": "yes",
+              "command": "look",
+              "script": "",
+              "keys": "keypad+5",
+              "isFolder": "no"
+       },
+       {
+              "name": "Up",
+              "isActive": "yes",
+              "command": "up",
+              "script": "",
+              "keys": "keypad+minus",
+              "isFolder": "no"
+       },
+       {
+              "name": "NE",
+              "isActive": "yes",
+              "command": "ne",
+              "script": "",
+              "keys": "keypad+9",
+              "isFolder": "no"
+       },
+       {
+              "name": "SE",
+              "isActive": "yes",
+              "command": "se",
+              "script": "",
+              "keys": "keypad+3",
+              "isFolder": "no"
+       },
+       {
+              "name": "NW",
+              "isActive": "yes",
+              "command": "nw",
+              "script": "",
+              "keys": "keypad+7",
+              "isFolder": "no"
+       },
+       {
+              "name": "SW",
+              "isActive": "yes",
+              "command": "sw",
+              "script": "",
+              "keys": "keypad+1",
+              "isFolder": "no"
+       },
+       {
+              "name": "West",
+              "isActive": "yes",
+              "command": "w",
+              "script": "",
+              "keys": "keypad+4",
+              "isFolder": "no"
+       },
+       {
+              "name": "East",
+              "isActive": "yes",
+              "command": "e",
+              "script": "",
+              "keys": "keypad+6",
+              "isFolder": "no"
+       },
+       {
+              "name": "South",
+              "isActive": "yes",
+              "command": "s",
+              "script": "",
+              "keys": "keypad+2",
+              "isFolder": "no"
+       },
+       {
+              "name": "North",
+              "isActive": "yes",
+              "command": "n",
+              "script": "",
+              "keys": "keypad+8",
+              "isFolder": "no"
+       }
+]

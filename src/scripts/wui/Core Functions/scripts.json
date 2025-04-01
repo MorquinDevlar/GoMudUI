@@ -1,0 +1,26 @@
+[
+       {
+              "name": "Color Map",
+              "isActive": "yes",
+              "script": "",
+              "isFolder": "no"
+       },
+       {
+              "name": "Utility Functions",
+              "isActive": "yes",
+              "script": "",
+              "isFolder": "no"
+       },
+       {
+              "name": "Autoupdater",
+              "isActive": "yes",
+              "script": "",
+              "isFolder": "no"
+       },
+       {
+              "name": "Settings Handler",
+              "isActive": "yes",
+              "script": "",
+              "isFolder": "no"
+       }
+]

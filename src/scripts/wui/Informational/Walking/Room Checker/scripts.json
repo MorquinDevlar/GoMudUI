@@ -1,0 +1,32 @@
+[
+       {
+              "name": "Identify Visited Rooms",
+              "isActive": "yes",
+              "script": "",
+              "isFolder": "no"
+       },
+       {
+              "name": "Show unvisited roms in area",
+              "isActive": "yes",
+              "script": "",
+              "isFolder": "no"
+       },
+       {
+              "name": "Highlight unvisited roms in area",
+              "isActive": "yes",
+              "script": "",
+              "isFolder": "no"
+       },
+       {
+              "name": "Mark area visited",
+              "isActive": "yes",
+              "script": "",
+              "isFolder": "no"
+       },
+       {
+              "name": "Mark area not visited",
+              "isActive": "yes",
+              "script": "",
+              "isFolder": "no"
+       }
+]

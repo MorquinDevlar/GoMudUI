@@ -1,0 +1,10 @@
+{
+       "package": "GoMudUI",
+       "title": "gomud.net 33333",
+       "description": "Default UI for GoMud - A MUD engine written in Go",
+       "version": "1",
+       "author": "Morquin",
+       "icon": "server-icon_small.png",
+       "dependencies": "",
+       "outputFile": true
+}
