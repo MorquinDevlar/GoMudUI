@@ -1,0 +1,9 @@
+[
+       {
+              "name": "ui main alias",
+              "isActive": "yes",
+              "regex": "^ui\\s?(\\w+)?\\s?(.*)?$",
+              "script": "",
+              "isFolder": "no"
+       }
+]

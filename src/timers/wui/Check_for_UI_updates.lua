@@ -1,1 +1,0 @@
-wui.checkForUpdate()
