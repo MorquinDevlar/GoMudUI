@@ -1,60 +1,48 @@
 function ui.updatePromptDisplay()
-  local char = gmcp.Char
-  if not char then return end
-
+  if gmcp.Char == nil or gmcp.Char.Vitals == nil or gmcp.Char.Worth == nil or gmcp.Char.Inventory == nil then
+    return
+  end
+  
   -- Cache values with sensible defaults.
   local xp, xptnl = 100, 1000
   local energy, energyMax = 100, 100
   local xpPct, xpPctPretty = 0, 0
   local gold, bank = 0, 0
   local carry, capacity = 0, 0
-  local spell, charge = "", ""
+  --local spell, charge = "", ""
 
-  local charVitals = char.Vitals
-  if charVitals then
-    xp    = charVitals.xp or 0
-    xptnl = charVitals.xptnl or 0
+  if gmcp.Char.Worth then
+    xp    = gmcp.Char.Worth.xp or 0
+    xptnl = gmcp.Char.Worth.tnl or 0
     xpPct = (xp / xptnl) * 100
     xpPctPretty = math.floor(xpPct + 0.5)
-    energy = charVitals.energy
-    energyMax = charVitals.maxenergy
-  else
+    gold  = gmcp.Char.Worth.gold_carry or 0
+    bank  = gmcp.Char.Worth.gold_bank or 0
     xpPct = (xp / xptnl) * 100
     xpPctPretty = math.floor(xpPct + 0.5)
   end
   
-  local charWorth = char.Worth
-  if charWorth then
-    gold  = charWorth.gold_carry or 0
-    bank  = charWorth.gold_bank or 0
-  end
-
-  local charInventory = char.Inventory
-  if charInventory and charInventory.Backpack then
-    carry    = charInventory.Backpack.count or 0
-    capacity = charInventory.Backpack.max or 0
-  end
-
-  local charStatuses = char.Statuses
-  if charStatuses then
-    spell  = charStatuses.cast or ""
-    charge = charStatuses.charge or ""
+  if gmcp.Char.Inventory and gmcp.Char.Inventory.Backpack then
+    carry    = gmcp.Char.Inventory.Backpack.count or 0
+    capacity = gmcp.Char.Inventory.Backpack.max or 0
   end
 
   local promptWidth = ui.mainWindowWidth / ui.consoleFontWidth
   local disp = ui.promptDisplay  -- cache the display reference
 
   disp:clear()
-  disp:cecho(" <grey>-- <violet>Spell prepared<white>: <DarkSeaGreen>[ ")
-  disp:cechoLink("<u><violet>" .. spell .. "</u>", [[send("t")]], "Use spell", true)
-  disp:cecho("<DarkSeaGreen> ] <grey>")
+  --disp:cecho(" <grey>-- <violet>Spell prepared<white>: <DarkSeaGreen>[ ")
+  --disp:cechoLink("<u><violet>" .. spell .. "</u>", [[send("t")]], "Use spell", true)
+  --disp:cecho("<DarkSeaGreen> ] <grey>")
 
-  if charge ~= "" then
-    disp:cecho("<SkyBlue>Charge<white>: <DarkSeaGreen>[ <green>" .. charge)
-    disp:cecho("<DarkSeaGreen> ] <grey>")
-  end
+  --if charge ~= "" then
+  --  disp:cecho("<SkyBlue>Charge<white>: <DarkSeaGreen>[ <green>" .. charge)
+  --  disp:cecho("<DarkSeaGreen> ] <grey>")
+  --end
+  
 
-  local repCount = promptWidth - string.len(spell) - 24
+  --local repCount = promptWidth - string.len(spell) - 24
+  local repCount = promptWidth
   disp:cecho(string.rep("-", repCount))
   disp:cecho("\n")
   

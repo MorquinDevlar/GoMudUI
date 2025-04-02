@@ -1,6 +1,6 @@
 function ui.updateBalanceGauge()
   if gmcp.Char == nil or gmcp.Char.Balance == nil or gmcp.Char.Balance.unbalance == nil then
-    ui.balGauge:setValue(100, 100, f"<center>Balanced</center>")
+    ui.balGauge:setValue(100, 100, f"<center>Balanced (not used)</center>")
     return
   end
   --If gmcp information is availabe set the values, otherwise use dummy values.

@@ -1,15 +1,13 @@
-ui.downloadFolder = getMudletHomeDir().."/"..ui.packageName.."/ui_updater/"
-
-
 -- Install the new UI
 function ui.installGoMudUI()
+  
   ui.displayUIMessage("Now installing version <sky_blue>"..ui.versionNew.."<reset> of GoMud UI")
   
     ui.isUpdating = true
     uninstallPackage("GoMudUI")
     ui.postInstallDone = false
     ui.firstRun = true
-    installPackage("https://play.gomudmud.com/static/website/ui/GoMudUI.mpackage")
+    installPackage("http://localhost/static/website/ui/GoMudUI.mpackage")
 end
 
 
@@ -32,13 +30,13 @@ function ui.checkForUpdate()
       end
   end
   ui.gomudUIVersionFile = ui.downloadFolder .. "version"
-  downloadFile(ui.gomudUIVersionFile, "https://play.gomudmud.com/static/website/ui/version.txt")
+  downloadFile(ui.gomudUIVersionFile, "http://localhost/static/ui/version.txt")
 end
 
 -- Fetch the changelog is the UI package was updated
 function ui.fetchChangeLog()
   ui.gomudUIChangelogFile = ui.downloadFolder .. "changelog"
-  downloadFile(ui.gomudUIChangelogFile, "https://play.gomudmud.com/static/website/ui/changelog.txt")
+  downloadFile(ui.gomudUIChangelogFile, "http://localhost/static/ui/changelog.txt")
 end
 
 function ui.fileDownloadedSuccess(_, filename)
@@ -95,7 +93,7 @@ function ui.fileDownloadedSuccess(_, filename)
     cechoLink("\n\n<green>### <gold>GoMud UI <white>: <dodger_blue><u>Click here to update to the latest version!</u>\n", [[ui.installGoMudUI()]], "Install new version of GoMud UI", true)
     ui.displayUIMessage("Or use the command <green>ui update ui<grey> to update.")
   end
-  
+
 end
 
 function ui.gomudUIShowFullChangelog()

@@ -1,11 +1,5 @@
 [
        {
-              "name": "Install-Login-Exit",
-              "isActive": "yes",
-              "script": "",
-              "isFolder": "no"
-       },
-       {
               "name": "Event handlers",
               "isActive": "yes",
               "script": "",
@@ -13,6 +7,12 @@
        },
        {
               "name": "UI Settings",
+              "isActive": "yes",
+              "script": "",
+              "isFolder": "no"
+       },
+       {
+              "name": "Install-Login-Exit",
               "isActive": "yes",
               "script": "",
               "isFolder": "no"

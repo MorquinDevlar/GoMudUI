@@ -51,8 +51,6 @@ sysMapDownloadEvent = {"ui.mapDownloaded"},
 ["mmapper updated map"] = {"ui.updateTopBar"},
 ["gmcp.Game.Who"] = {"ui.updateWhoDisplay"},
 ["gmcp.Game.Info"] = {"ui.justLoggedIn"},
-
-
 }
 -- Run this to define the event handlers above
 ui.defineEventHandlers()

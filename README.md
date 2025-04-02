@@ -53,5 +53,5 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 ## Credits
 
-Created by Morquin, inspired by Durd of Asteria
+Created by Morquin, inspired by [Durd](https://github.com/MentalThinking) of Asteria
 Copyright (c) 2025

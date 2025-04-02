@@ -1,5 +1,8 @@
 function ui.updateEnemyGauge()
-  if gmcp.Char == nil then return end
+  if gmcp.Char == nil then
+    ui.enemyGauge:setValue(100,100, f"<center>No Enemy (not used)</center>")
+    return
+  end
   --If gmcp information is availabe set the values, otherwise use dummy values.
   if gmcp.Char.Enemies and gmcp.Char.Enemies[1] then
     -- Update enemy health

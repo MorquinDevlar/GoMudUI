@@ -1,8 +1,8 @@
 [
        {
-              "name": "ui",
+              "name": "GoMudUI",
               "isActive": "yes",
-              "script": "",
+              "script": "ui = ui or {}",
               "isFolder": "yes"
        }
 ]
