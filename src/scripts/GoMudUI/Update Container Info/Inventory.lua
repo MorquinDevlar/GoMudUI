@@ -12,19 +12,18 @@ function ui.updateInvDisplay()
   local backpackItems = gmcp.Char.Inventory.Backpack.items
 
   if #backpackItems > 0 then
-    for index, item in ipairs(backpackItems) do
+    for _, itemName in ipairs(backpackItems) do
       ui.eqDisplay:cechoPopup("Inventory",
-        --"<sandy_brown>  " .. item.name .. " <reset>[" .. item.id .. "]\n",
-        "<sandy_brown>  " .. item.name .. "\n",
+        "<sandy_brown>  " .. ui.titleCase(itemName) .. "\n",
         {
-          [[send("look ]] .. item.id .. [[", false)]],
-          [[send("drop ]] .. item.id .. [[", false)]],
-          [[send("wear ]] .. item.id .. [[", false)]],
+          [[send("look ]] .. itemName .. [[", false)]],
+          [[send("drop ]] .. itemName .. [[", false)]],
+          [[send("wear ]] .. itemName .. [[", false)]],
         },
         {
-          "Look at " .. item.name,
-          "Drop " .. item.name,
-          "Wear " .. item.name
+          "Look at " .. ui.titleCase(itemName),
+          "Drop " .. ui.titleCase(itemName),
+          "Wear " .. ui.titleCase(itemName)
         },
         true
       )

@@ -32,8 +32,11 @@ end
 
 
 function ui.updateAffectsDisplay()
-  if gmcp.Char == nil then return end
-  if gmcp.Char.Statuses == nil then return end
+  if gmcp.Char == nil or gmcp.Char.Statuses == nil then
+    ui.affectsDisplay:clear("Affects")
+    ui.affectsDisplay:cecho("Affects", "\nAffects are not implemented yet here.")
+    return
+  end
   ui.affectsTable = {
     buff = {
       permanent = {

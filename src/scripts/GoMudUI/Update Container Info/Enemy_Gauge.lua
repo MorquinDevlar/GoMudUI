@@ -1,5 +1,5 @@
 function ui.updateEnemyGauge()
-  if gmcp.Char == nil then
+  if gmcp.Char == nil or gmcp.Char.Enemies == nil then
     ui.enemyGauge:setValue(100,100, f"<center>No Enemy (not used)</center>")
     return
   end

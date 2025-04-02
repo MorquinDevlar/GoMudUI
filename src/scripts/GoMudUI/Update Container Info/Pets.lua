@@ -1,6 +1,10 @@
 function ui.updatePetDisplay()
   -- Ensure GMCP data is valid
-  if not gmcp.Char or not gmcp.Char.Inventory or not gmcp.Char.Inventory.Pets then return end
+  if not gmcp.Char or not gmcp.Char.Inventory or not gmcp.Char.Inventory.Pets then
+    ui.eqDisplay:clear("Pets")
+    ui.eqDisplay:cecho("Pets", "\nPets are not implemented yet here.")
+    return
+  end
 
   ui.eqDisplay:clear("Pets")
 
