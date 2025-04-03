@@ -4,7 +4,6 @@ function ui.connected()
     ui = ui or {} 
 end
   
-  
 function ui.justLoggedIn()
   tempTimer(10, [[ ui.checkForUpdate() ]])
 end
@@ -62,7 +61,7 @@ end
 
 function ui.postInstallHandling(_, package)
 
-  if package == "mudlet-mapper_custom" then
+  if package == "mudlet-mapper" then
     mmp = mmp or {}
     raiseEvent("mmp logged in", "gomud")
     mmp.game = "gomud"
@@ -97,13 +96,16 @@ function ui.postInstallHandling(_, package)
       -- only has the defaultarea, and no rooms, so there's definitely no map loaded
       ui.displayUIMessage("No map loaded")
       --ui.displayUIMessage("Use 'mconfig crowdmap on' to use the crowd map")
+      -- just download a file and save it in our profile folder
+      ui.gomudMapFile = getMudletHomeDir().."/map downloads/" .. "gomudmap"
+      downloadFile(ui.gomudMapFile, "https://github.com/MorquinDevlar/GoMudUI/releases/latest/download/gomud.dat")
       end
     end
     
     -- Install IRE mapping script  
     if not table.contains(getPackages(),"mudlet-mapper") then
       ui.displayUIMessage("Now installing custom mapper script")
-      tempTimer(1, function() installPackage("http://localhost/static/ui/mudlet-mapper.mpackage") end)
+      tempTimer(1, function() installPackage("https://github.com/MorquinDevlar/GoMudUI/releases/latest/download/mudlet-mapper.mpackage") end)
     end
     
     ui.postInstallDone = true
@@ -120,7 +122,7 @@ function ui.unInstall(_, package)
   
   if package == "GoMudUI" and not ui.isUpdating then
     ui.displayUIMessage("Cleaning up - removing the UI mapper")
-    uninstallPackage("mudlet-mapper_custom")
+    uninstallPackage("mudlet-mapper")
     
     ui.displayUIMessage("Re-installing the generic mapper")
     if not table.contains(getPackages(),"generic_mapper") then

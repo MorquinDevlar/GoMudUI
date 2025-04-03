@@ -1,13 +1,17 @@
+ui = ui or {}
+ui.packageName = "GoMudUI"
+
+ui.downloadFolder = getMudletHomeDir().."/"..ui.packageName.."/ui_updater/"
 -- Install the new UI
 function ui.installGoMudUI()
   
-  ui.displayUIMessage("Now installing version <sky_blue>"..ui.versionNew.."<reset> of GoMud UI")
+    ui.displayUIMessage("Now installing version <sky_blue>"..ui.versionNew.."<reset> of GoMud UI")
   
     ui.isUpdating = true
     uninstallPackage("GoMudUI")
     ui.postInstallDone = false
     ui.firstRun = true
-    installPackage("http://localhost/static/website/ui/GoMudUI.mpackage")
+    installPackage("https://github.com/MorquinDevlar/GoMudUI/releases/latest/download/GoMudUI.mpackage")
 end
 
 
@@ -30,19 +34,18 @@ function ui.checkForUpdate()
       end
   end
   ui.gomudUIVersionFile = ui.downloadFolder .. "version"
-  downloadFile(ui.gomudUIVersionFile, "http://localhost/static/ui/version.txt")
+  downloadFile(ui.gomudUIVersionFile, "https://github.com/MorquinDevlar/GoMudUI/releases/latest/download/version.txt")
 end
 
 -- Fetch the changelog is the UI package was updated
 function ui.fetchChangeLog()
   ui.gomudUIChangelogFile = ui.downloadFolder .. "changelog"
-  downloadFile(ui.gomudUIChangelogFile, "http://localhost/static/ui/changelog.txt")
+  downloadFile(ui.gomudUIChangelogFile, "https://github.com/MorquinDevlar/GoMudUI/releases/latest/download/changelog.txt")
 end
 
 function ui.fileDownloadedSuccess(_, filename)
        
   if not io.exists(filename) then return end
-  
   
   -- Show the version and let the user know if they are behind
   if filename == tostring(ui.gomudUIVersionFile) then
@@ -94,6 +97,11 @@ function ui.fileDownloadedSuccess(_, filename)
     ui.displayUIMessage("Or use the command <green>ui update ui<grey> to update.")
   end
 
+  if filename == tostring(ui.gomudMapFile) then
+    ui.displayUIMessage("Map downloaded, now loading")
+    loadMap(getMudletHomeDir().."gomud.dat")
+    ui.displayUIMessage("Map loaded")
+  end
 end
 
 function ui.gomudUIShowFullChangelog()

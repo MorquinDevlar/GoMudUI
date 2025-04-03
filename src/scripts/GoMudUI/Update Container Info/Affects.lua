@@ -1,13 +1,13 @@
-function ui.showTempAffects(name, dur, buff)
+function ui.showTempAffects(name, duration, isBuff)
     local name = name
-    local dur = dur
-    local buff = buff
+    local duration = duration
+    local isBuff = isBuff
     
-    local h, m, s = shms(dur)
+    local h, m, s = shms(duration)
     if tonumber(h) > 0 then
       h = h.."<DodgerBlue>h<white> "
       s = ""
-      else
+    else
       h = ""
       s = " "..s.."<gold>s"
     end
@@ -17,9 +17,9 @@ function ui.showTempAffects(name, dur, buff)
     local timeLen = time:gsub("<%w+:?%w*>", "")
     local color = ""
     
-    if buff == 1 then
+    if isBuff then
       color = "<SpringGreen>"
-    elseif buff == 0 then
+    else
       color = "<red>"
     end
     
@@ -28,99 +28,74 @@ function ui.showTempAffects(name, dur, buff)
     return affect
 end
 
-
-
-
 function ui.updateAffectsDisplay()
-  if gmcp.Char == nil or gmcp.Char.Statuses == nil then
+  if gmcp.Char == nil or gmcp.Char.Affects == nil then
     ui.affectsDisplay:clear("Affects")
     ui.affectsDisplay:cecho("Affects", "\nAffects are not implemented yet here.")
     return
   end
+
   ui.affectsTable = {
     buff = {
-      permanent = {
-      },
-      timed = {
-      }
+      permanent = {},
+      timed = {}
     },
     debuff = {
-      permanent = {
-      },
-      timed = {
-      }
+      permanent = {},
+      timed = {}
     }
   }
 
-  
-  ui.affectsDisplay:clear("Affects") -- Clear the window, and prepare to write new values
+  ui.affectsDisplay:clear("Affects")
   
   ui.affectsDisplay:cecho("Affects", "<white>Affected by:"..string.rep(" ", math.floor(ui.affectsDisplay:get_width()/(ui.consoleFontWidth))-22).."Duration: ")
   ui.affectsDisplay:cecho("Affects", "\n")
   
-  local haveBuff = 0
-  if gmcp.Char.Statuses.active ~= {} then
-  ui.affectsDisplay:cecho("Affects", "\n")  
-    
-    
-    for i,v in pairs(gmcp.Char.Statuses.active) do      
-      if v.buff == 1 then
-        if v.duration < 0 then
-          table.insert(ui.affectsTable.buff.permanent, v.type)
-        end
-        
-        if v.duration > 0 then
-          table.insert(ui.affectsTable.buff.timed, ui.showTempAffects(v.type, v.duration, v.buff))
-        end
-        haveBuff = 1  
-      end
-      
-    end
-    
-    for i,v in pairs(gmcp.Char.Statuses.active) do
-      if v.buff == 0 then
-        if v.duration < 0 then
-          table.insert(ui.affectsTable.debuff.permanent, v.type)
-        end
-        
-        if v.duration > 0 then
-          table.insert(ui.affectsTable.debuff.timed, ui.showTempAffects(v.type, v.duration, v.buff))
-        end
-        
-      end
-    end      
-    
-    
-     
-    
-  end
-   
+  local haveBuff = false
   
-  -- Show permanemt positive affects
-  for k,v in pairs(ui.affectsTable.buff.permanent) do
-    ui.affectsDisplay:cecho("Affects", "<SkyBlue>"..v..string.rep(" ", math.floor(ui.affectsDisplay:get_width()/ui.consoleFontWidth)-string.len(v)-3).."<gold>-- \n")
+  -- Process all affects
+  for _, affect in pairs(gmcp.Char.Affects) do
+    local isBuff = affect.type ~= "debuff"
+    local isPermanent = affect.duration_cur < 0
+    
+    if isBuff then
+      haveBuff = true
+      if isPermanent then
+        table.insert(ui.affectsTable.buff.permanent, affect.name)
+      else
+        table.insert(ui.affectsTable.buff.timed, ui.showTempAffects(affect.name, affect.duration_cur, true))
+      end
+    else
+      if isPermanent then
+        table.insert(ui.affectsTable.debuff.permanent, affect.name)
+      else
+        table.insert(ui.affectsTable.debuff.timed, ui.showTempAffects(affect.name, affect.duration_cur, false))
+      end
+    end
+  end
+  
+  -- Show permanent positive affects
+  for _, affect in pairs(ui.affectsTable.buff.permanent) do
+    ui.affectsDisplay:cecho("Affects", "<SkyBlue>"..affect..string.rep(" ", math.floor(ui.affectsDisplay:get_width()/ui.consoleFontWidth)-string.len(affect)-3).."<gold>-- \n")
   end
   
   -- Show temporary positive effects
-  for k,v in pairs(ui.affectsTable.buff.timed) do
-    ui.affectsDisplay:cecho("Affects", v.."\n")
+  for _, affect in pairs(ui.affectsTable.buff.timed) do
+    ui.affectsDisplay:cecho("Affects", affect.."\n")
   end
   
-  if haveBuff == 1 then ui.affectsDisplay:echo("Affects","\n") end
+  if haveBuff then ui.affectsDisplay:echo("Affects","\n") end
   
-  -- Show permanemt negative affects
-  for k,v in pairs(ui.affectsTable.debuff.permanent) do
-    ui.affectsDisplay:cecho("Affects", "<red>"..v..string.rep(" ", math.floor(ui.affectsDisplay:get_width()/ui.consoleFontWidth)-string.len(v)-3).."<gold>-- \n")
+  -- Show permanent negative affects
+  for _, affect in pairs(ui.affectsTable.debuff.permanent) do
+    ui.affectsDisplay:cecho("Affects", "<red>"..affect..string.rep(" ", math.floor(ui.affectsDisplay:get_width()/ui.consoleFontWidth)-string.len(affect)-3).."<gold>-- \n")
   end
   
   -- Show temporary negative effects
-  for k,v in pairs(ui.affectsTable.debuff.timed) do
-    ui.affectsDisplay:cecho("Affects", v.."\n")
+  for _, affect in pairs(ui.affectsTable.debuff.timed) do
+    ui.affectsDisplay:cecho("Affects", affect.."\n")
   end
-  
-  
 end
-
 
 function ui.testStatus()
 

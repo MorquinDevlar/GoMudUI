@@ -20,16 +20,11 @@ function ui.updateEQDisplay()
   for _, slot in ipairs(locations) do
     local item = nil
     -- Check Wielded first
-    if gmcp.Char.Inventory.Wielded and gmcp.Char.Inventory.Wielded[slot] and gmcp.Char.Inventory.Wielded[slot] ~= "" then
+    if gmcp.Char.Inventory.Wielded and gmcp.Char.Inventory.Wielded[slot] and gmcp.Char.Inventory.Wielded[slot].name ~= "-nothing-" then
       item = gmcp.Char.Inventory.Wielded[slot]
-    elseif gmcp.Char.Inventory.Worn and gmcp.Char.Inventory.Worn[slot] and gmcp.Char.Inventory.Worn[slot] ~= "" then
+    elseif gmcp.Char.Inventory.Worn and gmcp.Char.Inventory.Worn[slot] and gmcp.Char.Inventory.Worn[slot].name ~= "-nothing-" then
       -- Check Worn if not wielded
       item = gmcp.Char.Inventory.Worn[slot]
-    end
-
-    -- Skip empty slots
-    if item == "-nothing-" then
-      item = nil
     end
 
     -- Display the slot name
@@ -38,16 +33,15 @@ function ui.updateEQDisplay()
     if not item then
       ui.eqDisplay:cecho("Equipment", "<red>---")
     else
-      local itemName = (type(item) == "table" and item.name) or item
       ui.eqDisplay:cechoPopup("Equipment",
-        "<sandy_brown>" .. ui.titleCase(itemName),
+        "<sandy_brown>" .. ui.titleCase(item.name),
         {
-          [[send("look ]] .. itemName .. [[", false)]],
-          [[send("remove ]] .. itemName .. [[", false)]],
+          [[send("look ]] .. item.id .. [[", false)]],
+          [[send("remove ]] .. item.id .. [[", false)]],
         },
         {
-          "Look at " .. ui.titleCase(itemName),
-          "Remove " .. ui.titleCase(itemName),
+          "Look at " .. ui.titleCase(item.name),
+          "Remove " .. ui.titleCase(item.name),
         },
         true
       )

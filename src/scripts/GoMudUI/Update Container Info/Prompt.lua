@@ -47,21 +47,21 @@ function ui.updatePromptDisplay()
   disp:cecho("\n")
   
   disp:cecho(" <DarkSeaGreen>[<white>EN<gold>:<green> " ..
-    ui.addNumberSeperator(energy) ..
+    ui.addNumberSeparator(energy) ..
     "<grey>/<grey>" ..
-    ui.addNumberSeperator(energyMax) ..
+    ui.addNumberSeparator(energyMax) ..
     "<DarkSeaGreen>] <grey>-")
   
   disp:cecho(" <DarkSeaGreen>[<white>XP<gold>:<green> " ..
-    ui.addNumberSeperator(xp) ..
+    ui.addNumberSeparator(xp) ..
     "<grey>/<grey>" ..
-    ui.addNumberSeperator(xptnl) ..
+    ui.addNumberSeparator(xptnl) ..
     " <gold>" .. xpPctPretty .. "<white>%<grey> TNL<DarkSeaGreen>] <grey>-")
   
   disp:cecho(" <DarkSeaGreen>[<white>Gold<gold>:<gold> " ..
-    ui.addNumberSeperator(gold) ..
+    ui.addNumberSeparator(gold) ..
     " <white>Bank<gold>:<gold> " ..
-    ui.addNumberSeperator(bank) ..
+    ui.addNumberSeparator(bank) ..
     "<DarkSeaGreen>] <grey>-")
   
   disp:cecho(" <DarkSeaGreen>[<DarkTurquoise>Carry<white>: <grey>" ..

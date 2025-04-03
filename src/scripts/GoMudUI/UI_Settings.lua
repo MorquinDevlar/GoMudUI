@@ -6,7 +6,7 @@ ui.knownRooms = ui.knownRooms or {}
 
 ui.settings = ui.settings or {}
 
-ui.version = "1"
+ui.version = "1.0.2"
 ui.packageName = "GoMudUI"
 
 ui.OSType, ui.OSVersion = getOS()
@@ -39,9 +39,9 @@ sysMapDownloadEvent = {"ui.mapDownloaded"},
 ["gmcp.Char.Vitals"] = {"ui.updatePlayerGauges", "ui.updatePromptDisplay"},
 ["gmcp.Char.Balance"] = {"ui.updateBalanceGauge"},
 ["gmcp.Char.Enemies"] = {"ui.updateEnemyGauge"},
-["gmcp.Char.Statuses"] = {"ui.updateAffectsDisplay","ui.updatePromptDisplay","ui.updatePromptRightDisplay"},
+["gmcp.Char.Affects"] = {"ui.updateAffectsDisplay"},
 ["gmcp.Char.Worth"] = {"ui.updatePromptDisplay", "ui.updateCharDisplay"},
-["gmcp.Char"] = {"ui.updateCharDisplay"},
+["gmcp.Char"] = {"ui.updateCharDisplay", "ui.updateAffectsDisplay", "ui.updatePromptDisplay","ui.updateTopBar"},
 ["gmcp.Char.Inventory"] = {"ui.updateEQDisplay", "ui.updatePromptDisplay", "ui.updateInvDisplay"},
 ["gmcp.Room"] = {"ui.updateRoomDisplay"},
 ["gmcp.Char.Stats"] = {"ui.updateCharDisplay"},

@@ -18,14 +18,28 @@ end
 function ui.updateRoomDisplay()
   -- Cache frequently accessed tables
   local room = gmcp.Room
-  if not (room and room.Info and room.Content) then return end
+  if not (room and room.Info) then return end
   
-  local info    = room.Info
-  local content = room.Content
+  -- Build info with defaults
+  local info = {
+    num = room.Info.num or "0",
+    environment = room.Info.environment or "Unknown",
+    area = room.Info.area or "Unknown Area",
+    details = room.Info.details or {},
+    quest = room.Info.quest or 0,
+    queststatus = room.Info.queststatus or "Undiscovered",
+    questname = room.Info.questname or "No Quest"
+  }
+  
+  -- Build content with defaults
+  local content = {
+    Adventures = room.Content and room.Content.Adventures or {},
+    NPC = room.Content and room.Content.NPC or {},
+    Items = room.Content and room.Content.Items or {}
+  }
 
   -- Cache and compute values once
   local room_features = (info.details and #info.details > 0) and table.concat(info.details, ", ") or "None"
-  info.quest = info.quest or 0
   local width = math.floor(ui.roomDisplay:get_width() / ui.consoleFontWidth)
   
   ui.roomDisplay:clear("Room")
@@ -59,8 +73,8 @@ function ui.updateRoomDisplay()
   
   -- Build lists from sub-tables
   local adventureList = getNames(content.Adventures)
-  local npcList       = getNames(content.NPC)
-  local itemList      = getNames(content.Items)
+  local npcList = getNames(content.NPC)
+  local itemList = getNames(content.Items)
   
   -- Display lists
   ui.roomDisplay:cecho("Room", 

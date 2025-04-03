@@ -7,6 +7,16 @@
               "minutes": "0",
               "seconds": "0",
               "milliseconds": "0",
-              "script": ""
+              "script": "ui.checkForUpdate()"
+       },
+       {
+              "name": "Update top bar",
+              "isActive": "yes",
+              "command": "",
+              "hours": "0",
+              "minutes": "0",
+              "seconds": "1",
+              "milliseconds": "0",
+              "script": "ui.updateTopBar()"
        }
 ]

@@ -1,10 +1,11 @@
 function ui.displayUIMessage(message)
+  if not message then return end
   cecho("\n<green>### <gold>GoMud UI <white>: <grey>"..message)
 end
 
-function ui.resizeEvent( event, x, y)
+function ui.resizeEvent(event, x, y)
   if not ui.mainWindowWidth then return end
-  local fontWidth,fontHeight = calcFontSize(getFontSize("main"), getFont(main))
+  local fontWidth, fontHeight = calcFontSize(getFontSize("main"), getFont(main))
   if ui.left then 
     ui.mainWindowWidth = select(1,getMainWindowSize())-ui.left:get_width()-ui.right:get_width()
     local windowWrap = math.floor(ui.mainWindowWidth/fontWidth)
@@ -14,48 +15,46 @@ function ui.resizeEvent( event, x, y)
 end
 
 function ui.cleanNumbers(v)
-  local fix = string.gsub(v, ",","")
-  return fix
+  if not v then return "0" end
+  local separator = ui.settings.numberSystem == "eu" and "." or ","
+  return string.gsub(v, separator, "")
 end
 
-function ui.addNumberSeperator(v)
+function ui.addNumberSeparator(v)
+  if not v then return "0" end
   local s = string.format("%d", math.floor(v))
   local pos = string.len(s) % 3
-  local correctedNumber
   if pos == 0 then pos = 3 end
-    if ui.settings.numberSystem == "eu" then
-      correctedNumber =  string.sub(s, 1, pos) .. string.gsub(string.sub(s, pos+1), "(...)", ".%1")
-    else
-      correctedNumber =  string.sub(s, 1, pos) .. string.gsub(string.sub(s, pos+1), "(...)", ",%1")
-    end
-  return correctedNumber
+  local separator = ui.settings.numberSystem == "eu" and "." or ","
+  return string.sub(s, 1, pos) .. string.gsub(string.sub(s, pos+1), "(...)", separator.."%1")
 end
-
 
 function ui.fixName(s)
-  local fix = string.gsub(string.gsub(string.gsub(string.gsub(string.lower(s)," ","_"),"'",""),"\"",""),",","")
-  return fix
+  if not s then return "" end
+  return string.lower(string.gsub(s, "[ ,'\"]", "_"))
 end
 
-function ui.padAndTruncate(str)
-  local str_padded = string.format("%2s", string.sub(str, 1, 2))
-  return str_padded
+function ui.padAndTruncate(str, width)
+  if not str then return string.rep(" ", width or 2) end
+  width = width or 2
+  return string.format("%"..width.."s", string.sub(str, 1, width))
 end
 
 function ui.titleCase(str)
-    local buf = {}
-    for word in string.gfind(str, "%S+") do          
-        local first, rest = string.sub(word, 1, 1), string.sub(word, 2)
-        table.insert(buf, string.upper(first) .. string.lower(rest))
-    end    
-    local title =  table.concat(buf, " ")
-    return title
+  if not str then return "" end
+  local buf = {}
+  for word in string.gmatch(str, "%S+") do
+    local first, rest = string.sub(word, 1, 1), string.sub(word, 2)
+    table.insert(buf, string.upper(first) .. string.lower(rest))
+  end
+  return table.concat(buf, " ")
 end
 
 function ui.easyMapperStart()
+  if not gmcp.Room or not gmcp.Room.Info then return end
   mmp.game = "gomud"
-  local areaName = ui.titleCase(string.gsub(gmcp.Room.Info.area, "_"," " ))
-  local roomNum = gmcp.Room.Info.num
+  local areaName = ui.titleCase(string.gsub(gmcp.Room.Info.area or "", "_"," " ))
+  local roomNum = gmcp.Room.Info.num or "0"
   expandAlias("mc on")
   expandAlias("rlc v"..roomNum.." 0 0 0")
   expandAlias("area add "..areaName)
@@ -95,66 +94,92 @@ function ui.showDebug()
   echo("\n")
   for _,v in pairs(getPackages()) do echo(v.." ") end
   echo("\n")
-  
 end
 
 function ui.mapDownloaded()
-  if gmcp.Room == nil or gmcp.Room.Info == nil then return end
+  if not gmcp.Room or not gmcp.Room.Info then return end
   if not centerview(gmcp.Room.Info.num) then
-    ui.displayUIMessage("Sorry, you are in a room not on the map so we cannot place you there.\n")
+    ui.displayUIMessage("Sorry, you are in room "..gmcp.Room.Info.num.." which is not on the map so we cannot place you there.\n")
   end
 end
 
-
--- this is to split version numbers into tables
 function ui.split_version(version)
-    local t = {}
-    for num in string.gmatch(version, "%d+") do
-        table.insert(t, tonumber(num))
-    end
-    return t
+  if not version then return {} end
+  local t = {}
+  for num in string.gmatch(version, "%d+") do
+    table.insert(t, tonumber(num))
+  end
+  return t
 end
 
--- Function to compare two version strings
 function ui.compare_versions(v1, v2)
-    local version1 = ui.split_version(v1)
-    local version2 = ui.split_version(v2)
+  if not v1 or not v2 then return false end
+  local version1 = ui.split_version(v1)
+  local version2 = ui.split_version(v2)
+  
+  for i = 1, math.max(#version1, #version2) do
+    local part1 = version1[i] or 0
+    local part2 = version2[i] or 0
     
-    -- Compare each part of the version number
-    for i = 1, math.max(#version1, #version2) do
-        local part1 = version1[i] or 0
-        local part2 = version2[i] or 0
-        
-        if part1 > part2 then
-            --return v1 .. " is newer"
-            return true
-        elseif part1 < part2 then
-            --return v2 .. " is newer"
-            return false  
-        end
+    if part1 > part2 then
+      return true
+    elseif part1 < part2 then
+      return false  
     end
-    
-    --return "Both versions are the same"
-    return false
+  end
+  
+  return false
 end
-
 
 function ui.versions_behind(old_version, new_version)
-    local old = ui.split_version(old_version)
-    local new = ui.split_version(new_version)
+  if not old_version or not new_version then return 0 end
+  local old = ui.split_version(old_version)
+  local new = ui.split_version(new_version)
+  
+  local difference = 0
+  
+  for i = 1, math.max(#old, #new) do
+    local part_old = old[i] or 0
+    local part_new = new[i] or 0
     
-    local difference = 0
-    
-    -- Compare each part of the version number
-    for i = 1, math.max(#old, #new) do
-        local part_old = old[i] or 0
-        local part_new = new[i] or 0
-        
-        -- Add up the difference in each version part
-        if part_old > part_new then
-            difference = difference + (part_old - part_new)
-        end
+    if part_old > part_new then
+      difference = difference + (part_old - part_new)
     end
-    
-    return difference
+  end
+  
+  return difference
+end
+
+function ui.parseTimestamp(timestamp)
+  if not timestamp then return nil end
+  local _, year, month, day, hour, min, sec = timestamp:match("(%w+), (%d+)-(%d+)-(%d+) (%d+):(%d+):(%d+)")
+  
+  if not year or not month or not day or not hour or not min or not sec then
+    return nil
+  end
+  
+  year, month, day = tonumber(year), tonumber(month), tonumber(day)
+  hour, min, sec = tonumber(hour), tonumber(min), tonumber(sec)
+  
+  return {
+    year = year,
+    month = month,
+    day = day,
+    hour = hour,
+    min = min,
+    sec = sec
+  }
+end
+
+function ui.getTimeElapsed(loginTimestamp)
+  if not loginTimestamp then return "00H 00M 00S" end
+  local loginTime = ui.parseTimestamp(loginTimestamp)
+  if not loginTime then return "00H 00M 00S" end
+  local loginUnix = os.time(loginTime)
+  local currentUnix = os.time()
+  local diffSeconds = currentUnix - loginUnix
+  local hours = math.floor(diffSeconds / 3600)
+  local minutes = math.floor((diffSeconds % 3600) / 60)
+  local seconds = diffSeconds % 60
+  return string.format("<gold>%02d<white>h <gold>%02d<white>m <gold>%02d<white>s", hours, minutes, seconds)
 end
