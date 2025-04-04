@@ -6,7 +6,7 @@ ui.knownRooms = ui.knownRooms or {}
 
 ui.settings = ui.settings or {}
 
-ui.version = "1.0.2"
+ui.version = "1.0.3"
 ui.packageName = "GoMudUI"
 
 ui.OSType, ui.OSVersion = getOS()
@@ -162,7 +162,7 @@ function ui.createSettings()
       charDisplay = {dest = "container1", emco = true, tabs = {"Character", "Wholist"}},
       eqDisplay = {dest = "container2", emco = true, tabs = {"Equipment","Inventory", "Pets"}},
       roomDisplay = {dest = "container3", emco = true, wrap = true, tabs = {"Room", "Combat"}},
-      channelDisplay = {dest = "container4", emco = true, allTab = true, wrap = true, tabs = {"All", "Chat","Tell","Local","Misc","Group"}},
+      channelDisplay = {dest = "container4", emco = true, allTab = true, wrap = true, tabs = {"All", "Broadcast","Say","Whisper","Shout","Group"}},
       gaugeDisplay = {dest = "container5"},
       promptDisplay = {dest = "container6"},
       mapperDisplay = {dest = "container7", emco = true, mapTab = "Mapper", tabs = {"Mapper", "Settings"}, mapper = true},

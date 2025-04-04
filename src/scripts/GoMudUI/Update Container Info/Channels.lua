@@ -13,45 +13,25 @@ function ui.updateChannelDisplay(eventName, ...)
     end
     
      ui.channelColor = {
-      chat = {
+      broadcast = {
         channelName = "Chat",
         channelColor = "<dodger_blue>"
       },
-      tell = {
-        channelName = "Tell",
+      whisper = {
+        channelName = "Whisper",
         channelColor = "<dark_violet>"},
-      ["local"] = {
+      say = {
         channelName = "Local",
         channelColor = "<dark_green>"
       },
-      group = {
-        channelName = "Local",
+      psay = {
+        channelName = "Group",
         channelColor = "<dark_violet>"
-      },
-      guild = {
-        channelName = "Guild",
-        channelColor = "<red>"
       },
       shout = {
         channelName = "Shout",
         channelColor = "<gold>"
-      },
-      achievements = {
-        channelName = "Misc",
-        channelColor = "<magenta>"
-      },
-      events = {
-        channelName = "Misc",
-        channelColor = "<SeaGreen>"},
-      logins = {
-        channelName = "Misc",
-        channelColor = "<magenta>"
-      },
-      deaths = {
-        channelName = "Misc",
-        channelColor = "<magenta>"
-      },
-     
+      }
     }
     
    -- Send chats to the right tab and with the right name and coloring
